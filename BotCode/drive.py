@@ -10,12 +10,19 @@ def forward(speed):
 
 
 def turnLeft(speed, innerWheelBraking):
-    tankDrive(speed - innerWheelBraking, speed)
+    tankDrive.on(speed - innerWheelBraking, speed)
 
 
 def turnRight(speed, innerWheelBraking):
-    tankDrive(speed, speed - innerWheelBraking)
+    tankDrive.on(speed, speed - innerWheelBraking)
+
+
+def turn180():
+    tankDrive.on(0, 0)
+    tankDrive.on_for_rotations(-50, 0, 1.4)
+    tankDrive.on_for_rotations(0, 50, 1.4)
+    tankDrive.on_for_rotations(-50, -50, 1)
 
 
 def stop():
-    tankDrive(0, 0)
+    tankDrive.on(0, 0)
