@@ -7,6 +7,8 @@ from BotCode.lightSensor import initialCalibration
 from BotCode.drive import forward, turnLeft, turnRight, turn180, stop
 
 speed = 20
+coursCompleted = False
+eventCounter = 1
 
 leftSensor = LightSensor(INPUT_1)
 middleSensor = ColorSensor(INPUT_2)
@@ -17,17 +19,22 @@ calibrationData = initialCalibration()
 lsThreshold = calibrationData[0]
 csThreshold = calibrationData[1]
 
-turn180()
 print(lsThreshold)
 print(csThreshold)
 print(leftSensor.reflected_light_intensity)
 print(rightSensor.reflected_light_intensity)
-print(distanceSensor.distance_centimeters_ping)
+print(distanceSensor.distance_centimeters)
 
-while True:
-    if leftSensor.reflected_light_intensity < lsThreshold:
-        turnLeft(speed, speed)
-    elif rightSensor.reflected_light_intensity < lsThreshold:
-        turnRight(speed, speed)
+while not coursCompleted:
+    if distanceSensor.distance_centimeters > 10:
+        if leftSensor.reflected_light_intensity < lsThreshold:
+            turnLeft(speed, speed)
+        elif rightSensor.reflected_light_intensity < lsThreshold:
+            turnRight(speed, speed)
+        else:
+            forward(speed)
+    elif distanceSensor.distance_centimeters <= 10 and eventCounter == 1:
+        turn180()
+        eventCounter += 1
     else:
-        forward(speed)
+        coursCompleted = True
