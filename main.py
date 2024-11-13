@@ -16,22 +16,12 @@ middleSensor = LightSensor(INPUT_2)
 rightSensor = LightSensor(INPUT_3)
 distanceSensor = UltrasonicSensor(INPUT_4)
 
-# calibrationData = initialCalibration()
-# lsThreshold = calibrationData[0]
-# csThreshold = calibrationData[1]
+threshold = recalibrate()
 
-lsThreshold = recalibrate()
-csThreshold = recalibrate()
-
-print(lsThreshold)
-print(csThreshold)
-print(leftSensor.reflected_light_intensity)
-print(rightSensor.reflected_light_intensity)
 print(distanceSensor.distance_centimeters)
 
 while not coursCompleted:
     if distanceSensor.distance_centimeters > 10:
-
         if leftSensor.reflected_light_intensity < lsThreshold:
             turnLeft(speed, speed)
         elif rightSensor.reflected_light_intensity < lsThreshold:
@@ -51,3 +41,5 @@ while not coursCompleted:
         # throw ball
     else:
         coursCompleted = True
+
+# Sunaa Risu

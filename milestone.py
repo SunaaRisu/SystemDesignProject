@@ -3,26 +3,20 @@
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
 from ev3dev2.sensor.lego import LightSensor, ColorSensor
 from ev3dev2.sensor.lego import UltrasonicSensor
-from BotCode.lightSensor import initialCalibration
+from BotCode.lightSensor import *
 from BotCode.drive import *
 
-speed = 20
+speed = 50
 coursCompleted = False
 eventCounter = 1
 
 leftSensor = LightSensor(INPUT_1)
-middleSensor = ColorSensor(INPUT_2)
+middleSensor = LightSensor(INPUT_2)
 rightSensor = LightSensor(INPUT_3)
 distanceSensor = UltrasonicSensor(INPUT_4)
 
-calibrationData = initialCalibration()
-lsThreshold = calibrationData[0]
-csThreshold = calibrationData[1]
+threshold = calibration()
 
-print(lsThreshold)
-print(csThreshold)
-print(leftSensor.reflected_light_intensity)
-print(rightSensor.reflected_light_intensity)
 print(distanceSensor.distance_centimeters)
 
 while not coursCompleted:
@@ -38,3 +32,5 @@ while not coursCompleted:
         eventCounter += 1
     else:
         coursCompleted = True
+
+# Sunaa Risu

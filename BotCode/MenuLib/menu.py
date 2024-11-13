@@ -19,20 +19,4 @@ def clear():
 def beep():
     sound.beep()
 
-
-def calibrationScreen():
-    print('Full Calibration (Button Up)\nFast Calibration (Button Down)')
-    while True:
-        if btn.up:
-            sound.beep()
-            screen.reset_console()
-            print('After Beep place all Sensors on\nWhite and press Enter.\nWait for Beep.\nDo the same for all\nSensors on Black and\nnormal driving position.\nPress Enter to start...')
-            input()
-            sound.beep()
-            return 1
-        if btn.down:
-            sound.beep()
-            screen.reset_console()
-            print('Place Bot on the Line.\nLeft and Right Sensor\non White, Middle Sensor on Black.\nPress Enter to continue...')
-            input()
-            return 2
+# Sunaa Risu
