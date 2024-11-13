@@ -2,10 +2,10 @@
 from BotCode.MenuLib.menu import calibrationScreen, beep, clear
 
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3
-from ev3dev2.sensor.lego import LightSensor, ColorSensor
+from ev3dev2.sensor.lego import LightSensor
 
 leftSensor = LightSensor(INPUT_1)
-middleSensor = ColorSensor(INPUT_2)
+middleSensor = LightSensor(INPUT_2)
 rightSensor = LightSensor(INPUT_3)
 
 
@@ -68,4 +68,7 @@ def initialCalibration():
 
 
 def recalibrate():
-    print('recalib')
+    white = 0.5 * (leftSensor.reflected_light_intensity + rightSensor.reflected_light_intensity)
+    black = middleSensor.reflected_light_intensity
+    threshold = 0.5 * (white + black)
+    return threshold
