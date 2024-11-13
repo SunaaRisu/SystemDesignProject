@@ -2,10 +2,10 @@
 from BotCode.MenuLib.menu import calibrationScreen, beep, clear
 
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3
-from ev3dev2.sensor.lego import LightSensor, ColorSensor
+from ev3dev2.sensor.lego import LightSensor
 
 leftSensor = LightSensor(INPUT_1)
-middleSensor = ColorSensor(INPUT_2)
+middleSensor = LightSensor(INPUT_2)
 rightSensor = LightSensor(INPUT_3)
 
 

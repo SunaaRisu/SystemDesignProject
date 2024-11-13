@@ -2,23 +2,26 @@
 
 from time import sleep
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
-from ev3dev2.sensor.lego import LightSensor, ColorSensor
+from ev3dev2.sensor.lego import LightSensor
 from ev3dev2.sensor.lego import UltrasonicSensor
 from BotCode.lightSensor import *
 from BotCode.drive import *
 
-speed = 20
+speed = 50
 coursCompleted = False
 eventCounter = 1
 
 leftSensor = LightSensor(INPUT_1)
-middleSensor = ColorSensor(INPUT_2)
+middleSensor = LightSensor(INPUT_2)
 rightSensor = LightSensor(INPUT_3)
 distanceSensor = UltrasonicSensor(INPUT_4)
 
-calibrationData = initialCalibration()
-lsThreshold = calibrationData[0]
-csThreshold = calibrationData[1]
+# calibrationData = initialCalibration()
+# lsThreshold = calibrationData[0]
+# csThreshold = calibrationData[1]
+
+lsThreshold = recalibrate()
+csThreshold = recalibrate()
 
 print(lsThreshold)
 print(csThreshold)

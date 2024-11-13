@@ -4,4 +4,4 @@ from ev3dev2.motor import OUTPUT_A, OUTPUT_B, MoveTank
 
 tankDrive = MoveTank(OUTPUT_A, OUTPUT_B)
 
-tankDrive.on_for_rotations(50, 50, 5)
+tankDrive.on_for_rotations(100, 100, 100)
