@@ -5,8 +5,12 @@ from ev3dev2.sensor.lego import LightSensor, ColorSensor
 from ev3dev2.sensor.lego import UltrasonicSensor
 from BotCode.lightSensor import *
 from BotCode.drive import *
+from math import pi
 
-speed = -20
+SPEED = -20  # negativ because the motors are mounted backwards -__-
+TIRE_DIAMETER = 0.1  # diameter in si units
+METER_PER_SECONDS = TIRE_DIAMETER * pi
+
 coursCompleted = False
 eventCounter = 1
 
@@ -22,15 +26,16 @@ print(distanceSensor.distance_centimeters)
 while not coursCompleted:
     if distanceSensor.distance_centimeters > 10:
         if leftSensor.reflected_light_intensity < threshold:
-            turnLeft(speed, speed)
+            turnLeft(SPEED, SPEED)
         elif rightSensor.reflected_light_intensity < threshold:
-            turnRight(speed, speed)
+            turnRight(SPEED, SPEED)
         else:
-            forward(speed)
+            forward(SPEED)
     elif distanceSensor.distance_centimeters <= 10 and eventCounter == 1:
         turn180OnSpot()
         eventCounter += 1
     else:
+        stop()
         coursCompleted = True
 
 # Sunaa Risu

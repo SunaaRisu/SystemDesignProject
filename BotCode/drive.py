@@ -25,7 +25,7 @@ def turn180():
 
 def turn180OnSpot():
     tankDrive.on(0, 0)
-    tankDrive.on_for_rotations(-50, -50, 1)
+    tankDrive.on_for_rotations(50, 50, 1)
     tankDrive.on_for_rotations(-50, 50, 1.2)
 
 
