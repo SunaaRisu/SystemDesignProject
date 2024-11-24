@@ -19,14 +19,14 @@ def turnRight(speed, innerWheelBraking):
 
 def turn180():
     tankDrive.on(0, 0)
-    tankDrive.on_for_rotations(-50, 0, 1.4)
-    tankDrive.on_for_rotations(0, 50, 1.4)
+    tankDrive.on_for_rotations(-50, 0, 1.2)
+    tankDrive.on_for_rotations(0, 50, 1.2)
 
 
 def turn180OnSpot():
     tankDrive.on(0, 0)
-    tankDrive.on(-50, -50, 1)
-    tankDrive.on_for_rotations(-50, 50, 1.4)
+    tankDrive.on_for_rotations(-50, -50, 1)
+    tankDrive.on_for_rotations(-50, 50, 1.2)
 
 
 def stop():

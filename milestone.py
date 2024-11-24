@@ -6,7 +6,7 @@ from ev3dev2.sensor.lego import UltrasonicSensor
 from BotCode.lightSensor import *
 from BotCode.drive import *
 
-speed = 50
+speed = -20
 coursCompleted = False
 eventCounter = 1
 
@@ -21,9 +21,9 @@ print(distanceSensor.distance_centimeters)
 
 while not coursCompleted:
     if distanceSensor.distance_centimeters > 10:
-        if leftSensor.reflected_light_intensity < lsThreshold:
+        if leftSensor.reflected_light_intensity < threshold:
             turnLeft(speed, speed)
-        elif rightSensor.reflected_light_intensity < lsThreshold:
+        elif rightSensor.reflected_light_intensity < threshold:
             turnRight(speed, speed)
         else:
             forward(speed)
