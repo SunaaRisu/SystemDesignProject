@@ -25,6 +25,12 @@ print(distanceSensor.distance_centimeters)
 
 while not coursCompleted:
     if distanceSensor.distance_centimeters > 10:
+        leftSensorLightIntensity = leftSensor.reflected_light_intensity
+        rightSensorLightIntensity = rightSensor.reflected_light_intensity
+        if type(leftSensor.reflected_light_intesity) is not int:
+            leftSensorLightIntensity = 255
+        if type(right.reflected_light_intesity) is not int:
+            rightSensorLightIntensity = 255
         if leftSensor.reflected_light_intensity < threshold:
             turnLeft(SPEED, SPEED)
         elif rightSensor.reflected_light_intensity < threshold:
