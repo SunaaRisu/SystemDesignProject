@@ -31,9 +31,9 @@ while not coursCompleted:
             leftSensorLightIntensity = 255
         if type(right.reflected_light_intesity) is not int:
             rightSensorLightIntensity = 255
-        if leftSensor.reflected_light_intensity < threshold:
+        if leftSensorLightIntensity < threshold:
             turnLeft(SPEED, SPEED)
-        elif rightSensor.reflected_light_intensity < threshold:
+        elif rightSensorLightIntensity < threshold:
             turnRight(SPEED, SPEED)
         else:
             forward(SPEED)
