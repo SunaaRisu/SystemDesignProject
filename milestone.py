@@ -19,22 +19,18 @@ middleSensor = LightSensor(INPUT_2)
 rightSensor = LightSensor(INPUT_3)
 distanceSensor = UltrasonicSensor(INPUT_4)
 
-threshold = calibration()
-
 print(distanceSensor.distance_centimeters)
 
 while not coursCompleted:
+    leftLight = leftSensor.reflected_light_intensity
+    rightLight = rightSensor.reflected_light_intensity
     if distanceSensor.distance_centimeters > 10:
-        leftSensorLightIntensity = leftSensor.reflected_light_intensity
-        rightSensorLightIntensity = rightSensor.reflected_light_intensity
-        if type(leftSensor.reflected_light_intesity) is not int:
-            leftSensorLightIntensity = 255
-        if type(right.reflected_light_intesity) is not int:
-            rightSensorLightIntensity = 255
-        if leftSensorLightIntensity < threshold:
-            turnLeft(SPEED, SPEED)
-        elif rightSensorLightIntensity < threshold:
+        if (leftLight - 10 < rightLight and rightLight - 10 < leftLight) and ((leftLight + rightLight) / 2) > (middleSensor.reflected_light_intensity + 10):
+            forward(SPEED)
+        elif rightLight < leftLight:
             turnRight(SPEED, SPEED)
+        elif rightLight > leftLight:
+            turnLeft(SPEED, SPEED)
         else:
             forward(SPEED)
     elif distanceSensor.distance_centimeters <= 10 and eventCounter == 1:

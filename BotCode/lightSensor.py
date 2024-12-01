@@ -15,8 +15,8 @@ def calibration():
     black = middleSensor.reflected_light_intensity
     alpha = 0.5
     threshold = alpha * (white + black)
-    if leftSensor.reflected_light_intensity < threshold or middleSensor.reflected_light_intensity > threshold or rightSensor.reflected_light_intensity < threshold:
-        return None
+    # if leftSensor.reflected_light_intensity < threshold or middleSensor.reflected_light_intensity > threshold or rightSensor.reflected_light_intensity < threshold:
+    #     return 'error'
     print('white:', white)
     print('black:', black)
     print('threshold:', threshold)
