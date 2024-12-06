@@ -7,7 +7,7 @@ from ev3dev2.sound import Sound
 from BotCode.drive import *
 
 SPEED = -20  # negativ because the motors are mounted backwards -__-
-LIGHTOFFSET = 8
+LIGHTOFFSET = 8  # offset because sonsors are not calibrated very well by lego -__-
 WALLDISTANCE = 10  # at which distance should the bot react to a wall
 
 coursCompleted = False
@@ -27,6 +27,7 @@ while not coursCompleted:
     leftLightCompare = leftLight + LIGHTOFFSET
     rightLightCompare = rightLight + LIGHTOFFSET
 
+    # we are trying to catch an error where the sensors return strings if the sun is very bright
     if type(leftLight) is not float or type(rightLight) is not float:
         print(leftLight, rightLight)
 
@@ -35,12 +36,6 @@ while not coursCompleted:
         eventCounter += 1
         continue
 
-    # if distanceSensor.distance_centimeters <= WALLDISTANCE and eventCounter != 1:
-    #     stop()
-    #     coursCompleted = True
-    #     break
-
-    # if distanceSensor.distance_centimeters > WALLDISTANCE:
     if (leftLight < rightLightCompare and rightLight < leftLightCompare) and ((leftLight + rightLight) / 2) > (middleSensor.reflected_light_intensity + LIGHTOFFSET):
         forward(SPEED)
         continue
@@ -53,11 +48,5 @@ while not coursCompleted:
     else:
         forward(SPEED)
         continue
-    # elif distanceSensor.distance_centimeters <= WALLDISTANCE and eventCounter == 1:
-    #     turn180()
-    #     eventCounter += 1
-    # else:
-    #     stop()
-    #     coursCompleted = True
 
 # Sunaa Risu

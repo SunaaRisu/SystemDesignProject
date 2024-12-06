@@ -7,17 +7,14 @@ tankDrive = MoveTank(OUTPUT_A, OUTPUT_B)
 
 def forward(speed):
     tankDrive.on(speed, speed)
-    # tankDrive.on_for_rotations(speed, speed, 0.05)
 
 
 def turnLeft(speed, innerWheelBraking):
     tankDrive.on(speed - innerWheelBraking, speed)
-    # tankDrive.on_for_rotations(speed - innerWheelBraking, speed, 0.05)
 
 
 def turnRight(speed, innerWheelBraking):
     tankDrive.on(speed, speed - innerWheelBraking)
-    # tankDrive.on_for_rotations(speed, speed - innerWheelBraking, 0.05)
 
 
 def turn180():
