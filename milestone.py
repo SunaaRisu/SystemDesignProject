@@ -7,7 +7,7 @@ from ev3dev2.sound import Sound
 from BotCode.drive import *
 
 SPEED = -20  # negativ because the motors are mounted backwards -__-
-LIGHTOFFSET = 10
+LIGHTOFFSET = 8
 WALLDISTANCE = 10  # at which distance should the bot react to a wall
 
 coursCompleted = False
@@ -24,20 +24,40 @@ sound.beep()
 while not coursCompleted:
     leftLight = leftSensor.reflected_light_intensity
     rightLight = rightSensor.reflected_light_intensity
-    if distanceSensor.distance_centimeters > WALLDISTANCE:
-        if (leftLight - LIGHTOFFSET < rightLight and rightLight - LIGHTOFFSET < leftLight) and ((leftLight + rightLight) / 2) > (middleSensor.reflected_light_intensity + LIGHTOFFSET):
-            forward(SPEED)
-        elif rightLight + LIGHTOFFSET < leftLight:
-            turnRight(SPEED, SPEED)
-        elif rightLight > leftLight + LIGHTOFFSET:
-            turnLeft(SPEED, SPEED)
-        else:
-            forward(SPEED)
-    elif distanceSensor.distance_centimeters <= WALLDISTANCE and eventCounter == 1:
+    leftLightCompare = leftLight + LIGHTOFFSET
+    rightLightCompare = rightLight + LIGHTOFFSET
+
+    if type(leftLight) is not float or type(rightLight) is not float:
+        print(leftLight, rightLight)
+
+    if distanceSensor.distance_centimeters <= WALLDISTANCE and eventCounter == 1:
         turn180()
         eventCounter += 1
+        continue
+
+    # if distanceSensor.distance_centimeters <= WALLDISTANCE and eventCounter != 1:
+    #     stop()
+    #     coursCompleted = True
+    #     break
+
+    # if distanceSensor.distance_centimeters > WALLDISTANCE:
+    if (leftLight < rightLightCompare and rightLight < leftLightCompare) and ((leftLight + rightLight) / 2) > (middleSensor.reflected_light_intensity + LIGHTOFFSET):
+        forward(SPEED)
+        continue
+    elif rightLight > leftLightCompare:
+        turnLeft(SPEED, SPEED)
+        continue
+    elif rightLightCompare < leftLight:
+        turnRight(SPEED, SPEED)
+        continue
     else:
-        stop()
-        coursCompleted = True
+        forward(SPEED)
+        continue
+    # elif distanceSensor.distance_centimeters <= WALLDISTANCE and eventCounter == 1:
+    #     turn180()
+    #     eventCounter += 1
+    # else:
+    #     stop()
+    #     coursCompleted = True
 
 # Sunaa Risu
