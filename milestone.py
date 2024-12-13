@@ -3,45 +3,50 @@
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
 from ev3dev2.sensor.lego import LightSensor, ColorSensor
 from ev3dev2.sensor.lego import UltrasonicSensor
-from BotCode.lightSensor import *
+from ev3dev2.sound import Sound
 from BotCode.drive import *
-from math import pi
 
 SPEED = -20  # negativ because the motors are mounted backwards -__-
-TIRE_DIAMETER = 0.1  # diameter in si units
-METER_PER_SECONDS = TIRE_DIAMETER * pi
+LIGHTOFFSET = 8  # offset because sonsors are not calibrated very well by lego -__-
+WALLDISTANCE = 10  # at which distance should the bot react to a wall
 
 coursCompleted = False
-eventCounter = 1
+eventCounter = 1  # counts to events on the track
 
 leftSensor = LightSensor(INPUT_1)
 middleSensor = LightSensor(INPUT_2)
 rightSensor = LightSensor(INPUT_3)
 distanceSensor = UltrasonicSensor(INPUT_4)
+sound = Sound()
 
-threshold = calibration()
-
-print(distanceSensor.distance_centimeters)
+sound.beep()
 
 while not coursCompleted:
-    if distanceSensor.distance_centimeters > 10:
-        leftSensorLightIntensity = leftSensor.reflected_light_intensity
-        rightSensorLightIntensity = rightSensor.reflected_light_intensity
-        if type(leftSensor.reflected_light_intesity) is not int:
-            leftSensorLightIntensity = 255
-        if type(right.reflected_light_intesity) is not int:
-            rightSensorLightIntensity = 255
-        if leftSensor.reflected_light_intensity < threshold:
-            turnLeft(SPEED, SPEED)
-        elif rightSensor.reflected_light_intensity < threshold:
-            turnRight(SPEED, SPEED)
-        else:
-            forward(SPEED)
-    elif distanceSensor.distance_centimeters <= 10 and eventCounter == 1:
-        turn180OnSpot()
+    leftLight = leftSensor.reflected_light_intensity
+    rightLight = rightSensor.reflected_light_intensity
+    leftLightCompare = leftLight + LIGHTOFFSET
+    rightLightCompare = rightLight + LIGHTOFFSET
+
+    # we are trying to catch an error where the sensors return strings if the sun is very bright
+    if type(leftLight) is not float or type(rightLight) is not float:
+        print(leftLight, rightLight)
+
+    if distanceSensor.distance_centimeters <= WALLDISTANCE and eventCounter == 1:
+        turn180()
         eventCounter += 1
+        continue
+
+    if (leftLight < rightLightCompare and rightLight < leftLightCompare) and ((leftLight + rightLight) / 2) > (middleSensor.reflected_light_intensity + LIGHTOFFSET):
+        forward(SPEED)
+        continue
+    elif rightLight > leftLightCompare:
+        turnLeft(SPEED, SPEED)
+        continue
+    elif rightLightCompare < leftLight:
+        turnRight(SPEED, SPEED)
+        continue
     else:
-        stop()
-        coursCompleted = True
+        forward(SPEED)
+        continue
 
 # Sunaa Risu
