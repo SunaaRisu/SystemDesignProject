@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-from ev3dev2.motor import OUTPUT_A, OUTPUT_B, MoveTank
+from ev3dev2.motor import OUTPUT_A, OUTPUT_B, OUTPUT_C, MoveTank, Motor
 
 tankDrive = MoveTank(OUTPUT_A, OUTPUT_B)
-
+motor3 = Motor(OUTPUT_C)
 
 def forward(speed):
     tankDrive.on(speed, speed)
@@ -25,5 +25,9 @@ def turn180():
 
 def stop():
     tankDrive.on(0, 0)
+
+
+def throwBall():
+    motor3.on_for_rotations(30, 0.2)
 
 # Sunaa Risu
