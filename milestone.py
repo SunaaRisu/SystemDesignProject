@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 
 from ev3dev2.sensor import INPUT_1, INPUT_2, INPUT_3, INPUT_4
-from ev3dev2.sensor.lego import LightSensor, ColorSensor
+from ev3dev2.sensor.lego import LightSensor
 from ev3dev2.sensor.lego import UltrasonicSensor
 from ev3dev2.sound import Sound
-from BotCode.drive import *
+from BotCode.drive import forward, turnLeft, turnRight, turn180, stop, throwBall
 
-SPEED = -20  # negativ because the motors are mounted backwards -__-
-LIGHTOFFSET = 8  # offset because sonsors are not calibrated very well by lego -__-
+from time import sleep
+
+SPEED = -20  # negativ because the motors are mounted backwards
+LIGHTOFFSET = 8  # offset because sonsors are not calibrated very well
 WALLDISTANCE = 10  # at which distance should the bot react to a wall
 
 coursCompleted = False
@@ -22,27 +24,42 @@ sound = Sound()
 sound.beep()
 
 while not coursCompleted:
-    leftLight = leftSensor.reflected_light_intensity
-    rightLight = rightSensor.reflected_light_intensity
-    leftLightCompare = leftLight + LIGHTOFFSET
-    rightLightCompare = rightLight + LIGHTOFFSET
+    left = leftSensor.reflected_light_intensity
+    right = rightSensor.reflected_light_intensity
+    middle = middleSensor.reflected_light_intensity
+    leftCompare = left + LIGHTOFFSET
+    rightCompare = right + LIGHTOFFSET
+    middleCompare = middle + LIGHTOFFSET
+    distance = distanceSensor.distance_centimeters
 
-    # we are trying to catch an error where the sensors return strings if the sun is very bright
-    if type(leftLight) is not float or type(rightLight) is not float:
-        print(leftLight, rightLight)
-
-    if distanceSensor.distance_centimeters <= WALLDISTANCE and eventCounter == 1:
+    if (distance <= WALLDISTANCE and eventCounter == 1):
         turn180()
-        eventCounter += 1
+        eventCounter = 2
         continue
 
-    if (leftLight < rightLightCompare and rightLight < leftLightCompare) and ((leftLight + rightLight) / 2) > (middleSensor.reflected_light_intensity + LIGHTOFFSET):
+    if (distance <= WALLDISTANCE and eventCounter == 2):
+        stop()
+        while distance <= WALLDISTANCE:
+            distance = distanceSensor.distance_centimeters
+            sleep(5)
+        eventCounter = 3
+        continue
+
+    if (distance <= WALLDISTANCE and eventCounter == 3):
+        stop()
+        throwBall()
+        coursCompleted = True
+        continue
+
+    if (left < rightCompare and
+            right < leftCompare) and\
+            ((left + right) / 2) > (middleCompare):
         forward(SPEED)
         continue
-    elif rightLight > leftLightCompare:
+    elif right > leftCompare:
         turnLeft(SPEED, SPEED)
         continue
-    elif rightLightCompare < leftLight:
+    elif rightCompare < left:
         turnRight(SPEED, SPEED)
         continue
     else:
